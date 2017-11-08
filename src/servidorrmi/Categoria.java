@@ -39,7 +39,7 @@ public class Categoria implements Serializable {
         System.out.print("\033[32mCódigo de la Película: ");
         codigo = getCadena();
         if (listaPeliculas.containsKey(codigo)){
-            System.err.print("Error: Ya existe una película con ese código.\n");
+            System.out.print("\033[31mError: Ya existe una película con ese código.\n");
         }
         else{
             System.out.print("\033[32mTítulo de Película: ");
@@ -64,7 +64,7 @@ public class Categoria implements Serializable {
             System.out.print("\033[32mPelicula removida con exito.");
         }
         else{
-            System.err.print("Error: No hay ninguna película con ese código. ");
+            System.out.print("\033[31mError: No hay ninguna película con ese código. ");
         }  
     }
 

@@ -27,7 +27,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     public void menu() throws IOException{
 
         while(true){
-            System.out.println("\033[32m***--Bienvenido Administrador--***");
+            System.out.println("\033[34m***--Bienvenido Administrador--***");
             System.out.println("\033[32m1. Agregar Categoría.");
             System.out.println("\033[32m2. Eliminar Categoría.");
             System.out.println("\033[32m3. Agregar Película.");
@@ -52,7 +52,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
                     ServidorRMI.salir();
                     break;
                 default:
-                    System.err.println("Error: No es una opción valida. Intente de nuevo.\n");
+                    System.out.println("\033[31mError: No es una opción valida. Intente de nuevo.\n");
                     break;
             }
             
@@ -131,7 +131,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
         System.out.print("\033[32mIngrese el código de la categoría:");
         String codigo = getCadena();
         if (listaCategorias.containsKey(codigo)){
-            System.err.print("Error: Ya existe una categoría con ese código.\n");
+            System.out.print("\033[31mError: Ya existe una categoría con ese código.\n");
         }else{
             System.out.print("\033[32mIngrese el nombre de la categoría: ");
             String nombreCategoria = getCadena();
@@ -148,7 +148,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
             listaCategorias.remove(codigo);
             System.out.println("\033[33mEliminación correcta.\n");
         }else{
-            System.err.println("Error: No hay ninguna categoría con ese código.\n");
+            System.out.println("\033[31mError: No hay ninguna categoría con ese código.\n");
         } 
     }
     
@@ -159,7 +159,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
             Categoria categoriaActual = listaCategorias.get(codigoCategoria);
             categoriaActual.agregarPelicula();
         } else {
-            System.err.println("Error: No existe una categoría con ese código.\n");
+            System.out.println("\033[31mError: No existe una categoría con ese código.\n");
         }
     }
     
@@ -170,7 +170,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
             Categoria categoriaActual = listaCategorias.get(codigoCategoria);
             categoriaActual.eliminarPelicula();
         } else {
-            System.err.println("Error: No existe una categoría con ese código.\n");
+            System.out.println("\033[31mError: No existe una categoría con ese código.\n");
         }
     }
     public static String getCadena(){

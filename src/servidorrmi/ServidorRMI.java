@@ -35,15 +35,15 @@ public class ServidorRMI implements Serializable{
                 archivoSerializacion.mkdir();
                 objetoSerializado.createNewFile();
             }
-            System.out.println("\033[32mEscuchando de " + dirIP + " con el puerto :" + puerto);
+            System.out.println("\033[36mEscuchando de " + dirIP + " con el puerto :" + puerto);
             System.setProperty("java.rmi.server.hostname", dirIP);
             Registry registry = LocateRegistry.createRegistry(puerto);
             registry.bind("operacionservidor", gestor);
             gestor.menu();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("\033[35m"+e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("\033[35m"+e.getMessage());
         }
     }
 
