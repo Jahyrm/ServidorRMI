@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servidorrmi;
 
 import RMIInterface.RMIInterface;
+import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -14,7 +11,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
  * @author Jahyr
  */
 public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Serializable{
@@ -22,21 +18,23 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     public static Scanner in = new Scanner (System.in);
     public static Scanner entero = new Scanner (System.in);
     
-    private static final int puerto = 3232; 
+    private final int puerto = 3232; 
     
     public static HashMap<String, Categoria> listaCategorias = new HashMap<>();
 
     public BaseDeDatos() throws RemoteException{}
 
-    public void mainuno(){
-        // TODO code application logic here
+    public void menu() throws IOException{
+
         while(true){
-            System.out.println("Bienvenido Administrador:");
-            System.out.println("1. Agregar Categoría.");
-            System.out.println("2. Eliminar Categoría.");
-            System.out.println("3. Agregar Película.");
-            System.out.println("4. Eliminar Película.");
-            int opcion = entero.nextInt();
+            System.out.println("\033[32m***--Bienvenido Administrador--***");
+            System.out.println("\033[32m1. Agregar Categoría.");
+            System.out.println("\033[32m2. Eliminar Categoría.");
+            System.out.println("\033[32m3. Agregar Película.");
+            System.out.println("\033[32m4. Eliminar Película.");
+            System.out.println("\033[32m5. Salir.");
+            System.out.print("\033[32mIngrese la opcion que desea elegir:");
+            int opcion = getEntero();
             switch (opcion) {
                 case 1:
                     agregarCategoria();
@@ -50,16 +48,21 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
                 case 4:
                     eliminarPelicula();
                     break;
+                case 5:
+                    ServidorRMI.salir();
+                    break;
                 default:
-                    System.err.println("Error: No es una opción valida. Intenta de nuevo.\n");
-
+                    System.err.println("Error: No es una opción valida. Intente de nuevo.\n");
+                    break;
             }
+            
         }
+        
+        
     }
     
     @Override
     public String imprimirLista() throws RemoteException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         StringBuilder sb = new StringBuilder ();
         
         for (Map.Entry<String, Categoria> categoriaActual : listaCategorias.entrySet()) {
@@ -74,12 +77,7 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
             }
             sb.append("\n");
         }
-        return sb.toString();
-        
-        //listaCategorias.forEach((k,v) -> System.out.println("Key: " + k + ": Value: " + v));
-        
-        //System.out.println("Imprimo LISTA");
-        //return "LISTA";
+        return sb.toString();       
     }
     
     @Override
@@ -122,7 +120,6 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     
     @Override
     public String getTitulo(String codigoCategoria, String codigoPelicula) throws RemoteException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String titulo = "";
         Map<String, Pelicula> listaPeliculas = listaCategorias.get(codigoCategoria).getListaPeliculas();
         Pelicula pelicula = listaPeliculas.get(codigoPelicula);
@@ -131,14 +128,13 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     }
     
     public static void agregarCategoria(){
-        System.out.println("Ingrese el código de la categoría:");
-        String codigo = in.nextLine();
+        System.out.print("\033[32mIngrese el código de la categoría:");
+        String codigo = getCadena();
         if (listaCategorias.containsKey(codigo)){
             System.err.print("Error: Ya existe una categoría con ese código.\n");
-        }
-        else{
-            System.out.println("Ingrese el nombre de la categoría: ");
-            String nombreCategoria = in.nextLine();
+        }else{
+            System.out.print("\033[32mIngrese el nombre de la categoría: ");
+            String nombreCategoria = getCadena();
             Categoria nuevaCategoria = new Categoria(codigo, nombreCategoria);
             listaCategorias.put(codigo, nuevaCategoria);
             System.out.println("");
@@ -146,20 +142,19 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     }
     
     public static void eliminarCategoria(){
-        System.out.println("Ingrese el código de la categoria a eliminar:");
-        String codigo = in.nextLine();
+        System.out.print("\033[32mIngrese el código de la categoria a eliminar:");
+        String codigo = getCadena();
         if (listaCategorias.containsKey(codigo)){
             listaCategorias.remove(codigo);
-            System.out.println("Eliminación correcta.\n");
-        }
-        else{
+            System.out.println("\033[33mEliminación correcta.\n");
+        }else{
             System.err.println("Error: No hay ninguna categoría con ese código.\n");
         } 
     }
     
     public static void agregarPelicula(){
-        System.out.println("Ingrese el código de la categoría: ");
-        String codigoCategoria = in.nextLine();
+        System.out.print("\033[32mIngrese el código de la categoría: ");
+        String codigoCategoria = getCadena();
         if(listaCategorias.containsKey(codigoCategoria)){
             Categoria categoriaActual = listaCategorias.get(codigoCategoria);
             categoriaActual.agregarPelicula();
@@ -169,8 +164,8 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
     }
     
     public static void eliminarPelicula(){
-        System.out.println("Ingrese el código de la categoría: ");
-        String codigoCategoria = in.nextLine();
+        System.out.print("\033[32mIngrese el código de la categoría: ");
+        String codigoCategoria = getCadena();
         if(listaCategorias.containsKey(codigoCategoria)){
             Categoria categoriaActual = listaCategorias.get(codigoCategoria);
             categoriaActual.eliminarPelicula();
@@ -178,4 +173,15 @@ public class BaseDeDatos extends UnicastRemoteObject implements RMIInterface, Se
             System.err.println("Error: No existe una categoría con ese código.\n");
         }
     }
+    public static String getCadena(){
+        Scanner ing=new Scanner(System.in);
+        String cadena=ing.nextLine();
+        return cadena;
+    }
+    
+    public static int getEntero(){
+        Scanner ing=new Scanner(System.in);
+        return ing.nextInt();
+    }
+    
 }

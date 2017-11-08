@@ -11,10 +11,17 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
  * @author Jahyr
  */
+
 public class Categoria implements Serializable {
+    
+    public static String getCadena(){
+        Scanner ingreso = new Scanner (System.in);
+        String cadena=ingreso.nextLine();
+        return cadena;
+    }
+    
     public static Scanner in = new Scanner (System.in);
 
     private String codigo;
@@ -29,37 +36,35 @@ public class Categoria implements Serializable {
 
     public void agregarPelicula() {
         String codigo, titulo, sinopsis, nombreArchivo, ip;
-        System.out.println("Código de Película: ");
-        codigo = in.nextLine();
+        System.out.print("\033[32mCódigo de la Película: ");
+        codigo = getCadena();
         if (listaPeliculas.containsKey(codigo)){
             System.err.print("Error: Ya existe una película con ese código.\n");
         }
         else{
-            System.out.println("Título de Película: ");
-            titulo = in.nextLine();
-            System.out.println("Sinopsis: ");
-            sinopsis = in.nextLine();
-            System.out.println("Nombre del Archivo: ");
-            nombreArchivo = in.nextLine();
-            System.out.println("Dirección IP que contien la Película:");
-            ip = in.nextLine();
+            System.out.print("\033[32mTítulo de Película: ");
+            titulo = getCadena();
+            System.out.print("\033[32mSinopsis: ");
+            sinopsis = getCadena();
+            System.out.print("\033[32mNombre del Archivo: ");
+            nombreArchivo = getCadena();
+            System.out.print("\033[32mDirección IP que contien la Película:");
+            ip = getCadena();
             Pelicula nuevaPelicula = new Pelicula(codigo, titulo, sinopsis, nombreCategoria, nombreArchivo, ip);
             listaPeliculas.put(codigo, nuevaPelicula);
-            System.out.println("Película agregada correctamente.\n");
-        }  
-        
-        
+            System.out.println("\033[33mPelícula agregada correctamente.\n");
+        }     
     }
     
     public void eliminarPelicula(){
-        System.out.println("Ingrese el código de la película a eliminar:");
-        String codigo = in.nextLine();
+        System.out.print("\033[32mIngrese el código de la película a eliminar:");
+        String codigo = getCadena();
         if (listaPeliculas.containsKey(codigo)){
             listaPeliculas.remove(codigo);
+            System.out.print("\033[32mPelicula removida con exito.");
         }
         else{
-            System.err.print("Error: ");
-            System.out.println(" No hay ninguna película con ese código.");  
+            System.err.print("Error: No hay ninguna película con ese código. ");
         }  
     }
 
